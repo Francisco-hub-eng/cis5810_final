@@ -1,46 +1,5 @@
-altair==5.4.1
-attrs==24.2.0
-blinker==1.8.2
-cachetools==5.5.0
-certifi==2024.8.30
-charset-normalizer==3.3.2
-click==8.1.7
-gitdb==4.0.11
-GitPython==3.1.43
-idna==3.10
-Jinja2==3.1.4
-jsonschema==4.23.0
-jsonschema-specifications==2023.12.1
-markdown-it-py==3.0.0
-MarkupSafe==2.1.5
-mdurl==0.1.2
-mkl-random @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_0fq2s894lk/croot/mkl_random_1695059822529/work
-mkl-service==2.4.0
-mkl_fft==1.3.10
-narwhals==1.9.0
-numpy @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_b7iptlxgej/croot/numpy_and_numpy_base_1708638622773/work/dist/numpy-1.26.4-cp311-cp311-macosx_10_9_x86_64.whl#sha256=3bf79c94c35598ae09c687371bfc007b468f0f9ce08e944366b60431f3a9a4fe
-opencv-python==4.10.0
-opencv-python-headless==4.10.0
-packaging==24.1
-pandas==2.2.3
-pillow==10.4.0
-protobuf==5.28.2
-pyarrow==17.0.0
-pydeck==0.9.1
-Pygments==2.18.0
-python-dateutil==2.9.0.post0
-pytz==2024.2
-referencing==0.35.1
-requests==2.32.3
-rich==13.9.1
-rpds-py==0.20.0
-six==1.16.0
-smmap==5.0.1
-streamlit==1.39.0
-tenacity==9.0.0
-toml==0.10.2
-tornado==6.4.1
-typing_extensions==4.12.2
-tzdata==2024.2
-urllib3==2.2.3
-watchdog==5.0.3
+streamlit==1.25.0  # Replace with the latest version if needed
+opencv-python==4.5.3.56  # Replace with the latest version if needed
+numpy==1.21.2  # Replace with the latest version if needed
+pillow==8.3.1  # Replace with the latest version if needed
+pandas==1.3.3  # Replace with the latest version if needed
