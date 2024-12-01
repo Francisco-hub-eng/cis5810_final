@@ -7,3 +7,4 @@ distinctipy
 scipy
 rembg
 Pillow
+onnxruntime
