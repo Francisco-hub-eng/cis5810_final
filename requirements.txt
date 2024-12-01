@@ -2,6 +2,6 @@ streamlit
 numpy  
 pandas 
 opencv-python-headless
-skimage
+scikit-image
 distinctipy
 scipy
