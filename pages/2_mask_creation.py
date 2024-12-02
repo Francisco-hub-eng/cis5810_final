@@ -327,7 +327,7 @@ if option == "Neural network":
     #binary_mask = (binary_mask * 255).astype(np.uint8)
 
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2 = st.columns(2)
 
     with col1:
         st.subheader("Image")
@@ -338,31 +338,31 @@ if option == "Neural network":
         normalized = cv2.normalize(output, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         st.image(normalized)
 
-    with col3:
-        st.subheader("mask")
-        normalized = cv2.normalize(binary_mask, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+    # with col3:
+    #     st.subheader("mask")
+    #     normalized = cv2.normalize(binary_mask, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
 
-        # First ensure mask is 2D and has proper dtype
-        normalized = normalized.astype(np.uint8)
+    #     # First ensure mask is 2D and has proper dtype
+    #     normalized = normalized.astype(np.uint8)
 
-        # Expand dimensions if the image is single channel
-        if len(normalized.shape) == 2:
-            # Stack the same image three times to create RGB
-            rgb_mask = np.stack((normalized,)*3, axis=-1)
-        else:
-            rgb_mask = normalized
+    #     # Expand dimensions if the image is single channel
+    #     if len(normalized.shape) == 2:
+    #         # Stack the same image three times to create RGB
+    #         rgb_mask = np.stack((normalized,)*3, axis=-1)
+    #     else:
+    #         rgb_mask = normalized
 
-        # Convert to 3-channel image (required by Streamlit)
-        #rgb_mask = cv2.cvtColor(normalized, cv2.COLOR_GRAY2RGB)
+    #     # Convert to 3-channel image (required by Streamlit)
+    #     #rgb_mask = cv2.cvtColor(normalized, cv2.COLOR_GRAY2RGB)
         
-        st.image(rgb_mask)
+    #     st.image(rgb_mask)
 
-    with col4:
-        st.subheader("result")
-        #normalized = cv2.normalize(img * normalized, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-        binary_mask = cv2.threshold(mask, 0, 1, cv2.THRESH_BINARY)[1]
-        st.image(img*binary_mask)
-        #st.image(img * normalized)
+    # with col4:
+    #     st.subheader("result")
+    #     #normalized = cv2.normalize(img * normalized, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+    #     binary_mask = cv2.threshold(mask, 0, 1, cv2.THRESH_BINARY)[1]
+    #     st.image(img*binary_mask)
+    #     #st.image(img * normalized)
 
     st.write("Rembg library obtained from: https://github.com/danielgatis/rembg")
 
