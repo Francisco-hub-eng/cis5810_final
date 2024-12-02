@@ -341,7 +341,11 @@ if option == "Neural network":
     with col3:
         st.subheader("mask")
         normalized = cv2.normalize(binary_mask, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-        st.image(normalized)
+
+        # Convert to 3-channel image (required by Streamlit)
+        rgb_mask = cv2.cvtColor(normalized, cv2.COLOR_GRAY2RGB)
+        
+        st.image(rgb_mask)
 
     with col4:
         st.subheader("result")
