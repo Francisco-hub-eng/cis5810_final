@@ -342,15 +342,27 @@ if option == "Neural network":
         st.subheader("mask")
         normalized = cv2.normalize(binary_mask, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
 
+        # First ensure mask is 2D and has proper dtype
+        normalized = normalized.astype(np.uint8)
+
+        # Expand dimensions if the image is single channel
+        if len(normalized.shape) == 2:
+            # Stack the same image three times to create RGB
+            rgb_mask = np.stack((normalized,)*3, axis=-1)
+        else:
+            rgb_mask = normalized
+
         # Convert to 3-channel image (required by Streamlit)
-        rgb_mask = cv2.cvtColor(normalized, cv2.COLOR_GRAY2RGB)
+        #rgb_mask = cv2.cvtColor(normalized, cv2.COLOR_GRAY2RGB)
         
         st.image(rgb_mask)
 
     with col4:
         st.subheader("result")
-        normalized = cv2.normalize(img * binary_mask, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-        st.image(normalized)
+        #normalized = cv2.normalize(img * normalized, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+        binary_mask = cv2.threshold(mask, 0, 1, cv2.THRESH_BINARY)[1]
+        st.image(img*binary_mask)
+        #st.image(img * normalized)
 
     st.write("Rembg library obtained from: https://github.com/danielgatis/rembg")
 
