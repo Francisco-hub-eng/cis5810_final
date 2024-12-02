@@ -324,7 +324,7 @@ if option == "Neural network":
     # Create binary mask using threshold
     binary_mask = cv2.threshold(mask, 0, 1, cv2.THRESH_BINARY)[1]
 
-    binary_mask = (binary_mask * 255).astype(np.uint8)
+    #binary_mask = (binary_mask * 255).astype(np.uint8)
 
 
     col1, col2, col3, col4 = st.columns(4)
