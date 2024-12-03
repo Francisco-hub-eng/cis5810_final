@@ -6,7 +6,7 @@ import pandas as pd
 
 st.header("CIS5810 - 5 - Photography techniques")
 
-st.header("Panning using kernel motion blur")
+st.header("Panning using kernel motion blur and python library Rembg")
 
 
 def apply_panning_effect(img, blur_amount=15, subject_area=None):

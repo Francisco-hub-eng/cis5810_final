@@ -10,7 +10,7 @@ st.header("CIS5810 - 5 - Photography techniques")
 
 option = st.selectbox(
     "Segmentation technique:",
-    ["Felzenswald", "Clustering", "Edge", "Region", "Neural network"],
+    ["Felzenswald", "Clustering", "Edge", "Neural network"],
     index=0,
     placeholder="Choose an option"
 )
@@ -220,30 +220,82 @@ if option == "Edge":
     sobel_horizontal = np.array([np.array([1, 2, 1]), np.array([0, 0, 0]), np.array([-1, -2, -1])])
     sobel_vertical = np.array([np.array([-1, 0, 1]), np.array([-2, 0, 2]), np.array([-1, 0, 1])])
 
-    out_h = ndimage.convolve(gray, sobel_horizontal, mode='reflect')
-    out_v = ndimage.convolve(gray, sobel_vertical, mode='reflect')
-    out = out_h + out_v
+    choice = st.radio(
+        "Make your selection",
+        ["Original image", "Preprocessing image"],
+        horizontal=True  # Display horizontally instead of vertically
+    )
 
-    col1, col2, col3, col4 = st.columns(4)
+    if choice == "Original image":
 
-    with col1:
-        st.subheader("Image")
-        st.image(img)
+        out_h = ndimage.convolve(gray, sobel_horizontal, mode='reflect')
+        out_v = ndimage.convolve(gray, sobel_vertical, mode='reflect')
+        out = out_h + out_v
 
-    with col2:
-        st.subheader("horizontal")
-        normalized = cv2.normalize(out_h, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-        st.image(normalized)
+        col1, col2, col3, col4 = st.columns(4)
 
-    with col3:
-        st.subheader("vertical")
-        normalized = cv2.normalize(out_v, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-        st.image(normalized)
+        with col1:
+            st.subheader("Image")
+            st.image(img)
 
-    with col4:
-        st.subheader("both")
-        normalized = cv2.normalize(out, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-        st.image(normalized)
+        with col2:
+            st.subheader("horizontal")
+            normalized = cv2.normalize(out_h, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            st.image(normalized)
+
+        with col3:
+            st.subheader("vertical")
+            normalized = cv2.normalize(out_v, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            st.image(normalized)
+
+        with col4:
+            st.subheader("both")
+            normalized = cv2.normalize(out, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            st.image(normalized)
+
+    if choice == "Preprocessing image":
+
+        st.write("The image was preprocessed to try to decrease the edges in the tree and keep only the edges in the car using grayscale, gaussian blur, dilation, morphological closing")
+
+        gray = rgb2gray(img)
+        # Apply Gaussian blur to the grayscale image
+        blur = cv2.GaussianBlur(gray, (25, 25), 0)
+        # Apply dilation to the blurred image
+        dilated = cv2.dilate(blur, np.ones((3, 3)))
+        # Apply morphological closing to the dilated image
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
+        closing = cv2.morphologyEx(dilated, cv2.MORPH_CLOSE, kernel)
+
+        out_h = ndimage.convolve(closing, sobel_horizontal, mode='reflect')
+        out_v = ndimage.convolve(closing, sobel_vertical, mode='reflect')
+        out = out_h + out_v
+
+
+
+        col1, col2, col3, col4, col5 = st.columns(5)
+
+        with col1:
+            st.subheader("Image")
+            st.image(img)
+
+        with col2:
+            st.subheader("Prep")
+            st.image(closing )
+
+        with col3:
+            st.subheader("h")
+            normalized = cv2.normalize(out_h, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            st.image(normalized)
+
+        with col4:
+            st.subheader("v")
+            normalized = cv2.normalize(out_v, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            st.image(normalized)
+
+        with col5:
+            st.subheader("both")
+            normalized = cv2.normalize(out, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            st.image(normalized)
 
 if option == "Region":
 
@@ -293,7 +345,7 @@ if option == "Region":
 
 if option == "Neural network":
 
-    st.subheader("Segmentation with neural networks - rembg")
+    st.subheader("Segmentation with neural networks - Rembg")
 
     from rembg import remove
     from PIL import Image
@@ -324,9 +376,10 @@ if option == "Neural network":
     # Create binary mask using threshold
     binary_mask = cv2.threshold(mask, 0, 1, cv2.THRESH_BINARY)[1]
 
+    #binary_mask = (binary_mask * 255).astype(np.uint8)
 
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2 = st.columns(2)
 
     with col1:
         st.subheader("Image")
@@ -337,15 +390,31 @@ if option == "Neural network":
         normalized = cv2.normalize(output, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         st.image(normalized)
 
-    with col3:
-        st.subheader("mask")
-        normalized = cv2.normalize(binary_mask, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-        st.image(normalized)
+    # with col3:
+    #     st.subheader("mask")
+    #     normalized = cv2.normalize(binary_mask, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
 
-    with col4:
-        st.subheader("result")
-        normalized = cv2.normalize(img * binary_mask, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-        st.image(normalized)
+    #     # First ensure mask is 2D and has proper dtype
+    #     normalized = normalized.astype(np.uint8)
+
+    #     # Expand dimensions if the image is single channel
+    #     if len(normalized.shape) == 2:
+    #         # Stack the same image three times to create RGB
+    #         rgb_mask = np.stack((normalized,)*3, axis=-1)
+    #     else:
+    #         rgb_mask = normalized
+
+    #     # Convert to 3-channel image (required by Streamlit)
+    #     #rgb_mask = cv2.cvtColor(normalized, cv2.COLOR_GRAY2RGB)
+        
+    #     st.image(rgb_mask)
+
+    # with col4:
+    #     st.subheader("result")
+    #     #normalized = cv2.normalize(img * normalized, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+    #     binary_mask = cv2.threshold(mask, 0, 1, cv2.THRESH_BINARY)[1]
+    #     st.image(img*binary_mask)
+    #     #st.image(img * normalized)
 
     st.write("Rembg library obtained from: https://github.com/danielgatis/rembg")
 
