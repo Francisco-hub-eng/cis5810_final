@@ -127,4 +127,4 @@ if uploaded_file is not None:
     st.markdown(styled_df.to_html(), unsafe_allow_html=True)
 
 st.text("Image from https://www.pexels.com/photo/classic-fiat-500-parked-on-a-gravel-road-19143439/")
-        
+       
